@@ -39,7 +39,7 @@
 										<circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
 									</g>
 								</svg>
-								<input v-model="loginForm.password" type="password" required placeholder="Password" minlength="8"
+								<input v-model="loginForm.password" type="password" required placeholder="Password" minlength="1"
 											 title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"/>
 							</label>
 						</fieldset>
