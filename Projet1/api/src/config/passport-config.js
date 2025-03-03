@@ -6,10 +6,10 @@ module.exports = function (passport, User) {
 
     passport.use(
         new LocalStrategy(
-            {usernameField: 'emailId', passwordField: 'password'},
+            {usernameField: 'email', passwordField: 'password'},
             async (email, password, done) => {
                 try {
-                    const user = await User.findOne({where: {emailId: email}});
+                    const user = await User.findOne({where: {email}});
 
                     if (!user) {
                         return done(null, false, {message: 'Email non enregistré'});
