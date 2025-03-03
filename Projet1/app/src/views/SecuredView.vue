@@ -12,7 +12,7 @@
 						<p>Nom d'utilisateur: <span class="font-semibold">{{ user.username }}</span></p>
 						<p>Email: <span class="font-semibold">{{ user.email }}</span></p>
 						<div class="card-actions justify-end mt-4">
-							<button class="btn btn-neutral">Modifier le profil</button>
+							<button class="btn btn-neutral" @click.prevent="fetchUser">Mettre à jour</button>
 						</div>
 					</div>
 				</div>
@@ -22,12 +22,15 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
 	name: "SecuredView.vue",
 	computed: {
 		...mapState(['user'])
+	},
+	methods: {
+		...mapActions(['fetchUser'])
 	},
 	async beforeMount() {
 		if (!this.user) {
