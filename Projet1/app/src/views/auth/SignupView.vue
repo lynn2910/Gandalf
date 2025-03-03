@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
 	name: "LoginView",
@@ -108,8 +108,17 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions(['registerNewUser']),
 		register() {
+			this.registerNewUser(this.registerForm)
 		}
 	},
+	watch: {
+		user(newUser) {
+			if (newUser) {
+				this.$router.push({name: 'secured'})
+			}
+		}
+	}
 }
 </script>

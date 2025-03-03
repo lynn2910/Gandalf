@@ -28,6 +28,11 @@ export default {
 	name: "SecuredView.vue",
 	computed: {
 		...mapState(['user'])
+	},
+	async beforeMount() {
+		if (!this.user) {
+			await this.$router.push({name: 'login'})
+		}
 	}
 }
 </script>

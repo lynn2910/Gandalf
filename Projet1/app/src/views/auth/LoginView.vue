@@ -40,20 +40,13 @@
 									</g>
 								</svg>
 								<input v-model="loginForm.password" type="password" required placeholder="Password" minlength="8"
-											 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
 											 title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"/>
 							</label>
-							<p class="validator-hint hidden">
-								Must be more than 8 characters, including
-								<br/>At least one number
-								<br/>At least one lowercase letter
-								<br/>At least one uppercase letter
-							</p>
 						</fieldset>
 
 						<!-- Login btn -->
 						<div class="form-control mt-6">
-							<button type="submit" class="btn btn-primary" @click="login">Se Connecter</button>
+							<button type="submit" class="btn btn-primary">Se Connecter</button>
 						</div>
 					</form>
 
@@ -87,7 +80,15 @@ export default {
 	methods: {
 		...mapActions(['loginUser']),
 		login() {
+			this.loginUser(this.loginForm)
 		}
 	},
+	watch: {
+		user(newUser, _) {
+			if (newUser) {
+				this.$router.push({name: 'secured'})
+			}
+		}
+	}
 }
 </script>

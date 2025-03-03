@@ -1,5 +1,5 @@
 <template>
-	<div id="app" class="text-white">
+	<div id="app" class="text-white max-h-screen max-w-screen">
 		<!-- Navigation -->
 		<!--		<nav class="fixed z-50 bg-white w-screen py-3 px-5 flex flex-row justify-start gap-3 select-none shadow mb-5">-->
 		<!--			<router-link :to="{name:'home'}">-->

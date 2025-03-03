@@ -6,31 +6,28 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        user: {
-            username: "Marvyn",
-            email: "Marvyn@gmail.com",
-        },
+        user: null,
     },
     mutations: {
         updateUser: (state, user) => {
+            console.log("Updating user", user)
             state.user = user;
         }
     },
     actions: {
-        async loginUser({commit}, {login, password}) {
-            // TODO
-            let res = await UserService.login(login, password);
+        async loginUser({commit}, {email, password}) {
+            let res = await UserService.login(email, password);
             if (!res.error) {
-                commit("updateUser", res.data);
+                commit("updateUser", res.data?.user);
             } else {
                 console.error(res.data)
             }
         },
-        async registerNewUser({commit}, data) {
-            let res = await UserService.register(data);
+        async registerNewUser({commit}, {email, password, username}) {
+            let res = await UserService.register(username, email, password);
 
             if (!res.error) {
-                commit("updateUser", res.data);
+                commit("updateUser", res.data?.user);
             } else {
                 console.error(res.data)
             }
