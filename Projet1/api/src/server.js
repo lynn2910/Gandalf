@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 
 const passport = require("passport");
 const session = require("express-session");
@@ -7,6 +8,11 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(cors({
+    origin: 'http://localhost:8080',
+    credentials: true
+}));
 
 
 const dotenv = require("dotenv");
