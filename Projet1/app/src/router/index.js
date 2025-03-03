@@ -34,14 +34,10 @@ const routes = [
         ]
     },
     {
-        path: '/register',
-        name: 'register',
-        meta: {title: "Login"},
-    },
-    {
         path: "/secured",
         name: 'secured',
-        meta: {title: "Login"},
+        component: () => import("../views/SecuredView.vue"),
+        meta: {title: "Espace sécurisé"},
     }
 ]
 
