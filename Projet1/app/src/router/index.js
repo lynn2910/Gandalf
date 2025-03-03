@@ -11,22 +11,37 @@ const routes = [
         component: () => import("../views/HomeView.vue")
     },
     {
-        path: '/about',
-        name: 'about',
-        meta: {title: "About"},
-        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-    },
-    {
-        path: '/login',
-        name: 'login',
+        path: '/auth/',
+        redirect: '/auth/login',
+        component: () => import("../views/auth/AuthLayout.vue"),
+        children: [
+            {
+                path: "login",
+                name: 'login',
+                meta: {title: "Login"},
+                components: {
+                    auth_body: () => import("../views/auth/LoginView.vue"),
+                }
+            },
+            {
+                path: "signup",
+                name: 'signup',
+                meta: {title: "Créer un compte"},
+                components: {
+                    auth_body: () => import("../views/auth/SignupView.vue"),
+                }
+            }
+        ]
     },
     {
         path: '/register',
         name: 'register',
+        meta: {title: "Login"},
     },
     {
         path: "/secured",
         name: 'secured',
+        meta: {title: "Login"},
     }
 ]
 
