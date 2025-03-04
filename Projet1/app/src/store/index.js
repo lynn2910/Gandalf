@@ -39,6 +39,14 @@ export default new Vuex.Store({
             } else {
                 console.error(res.data)
             }
+        },
+        async logout({commit}) {
+            let res = await UserService.logout();
+            if (!res.error) {
+                commit("updateUser", null);
+            } else {
+                console.error(res.data)
+            }
         }
     },
 })

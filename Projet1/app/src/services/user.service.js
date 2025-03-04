@@ -16,4 +16,8 @@ async function getUser() {
     return await Request.get("/user").send();
 }
 
-export default {login, register, getUser};
+async function logout() {
+    return await Request.get("/logout").send();
+}
+
+export default {login, register, getUser, logout};

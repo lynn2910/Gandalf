@@ -16,9 +16,10 @@
 					</li>
 					<li></li>
 					<li>
-						<router-link :to="{name:'login'}" :disabled="user !== null" type="button" class="btn btn-accent">
+						<router-link v-if="!user" :to="{name:'login'}" type="button" class="btn btn-accent">
 							Login
 						</router-link>
+						<button v-else type="button" class="btn btn-neutral" @click.prevent="logoutUser">Logout</button>
 					</li>
 				</ul>
 			</div>
@@ -36,7 +37,11 @@ export default {
 		...mapState(["user"])
 	},
 	methods: {
-		...mapActions(['fetchUser'])
+		...mapActions(['fetchUser', 'logout']),
+		async logoutUser() {
+			await this.logout();
+			await this.$router.push({name: 'login'})
+		}
 	},
 	async beforeMount() {
 		try {
