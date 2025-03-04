@@ -37,12 +37,15 @@
 				</div>
 
 				<div class="flex justify-center space-x-4 mt-8">
-					<router-link :to="{name:'login'}" class="btn btn-primary">
+					<router-link v-if="!user" :to="{name:'login'}" class="btn btn-primary">
 						Se Connecter
 					</router-link>
-					<router-link :to="{name:'register'}" class="btn btn-secondary">
+					<router-link v-if="!user" :to="{name:'register'}" class="btn btn-secondary">
 						S'inscrire
 					</router-link>
+					<button v-if="user" type="button" @click.prevent="logout" class="btn btn-active">
+						Se déconnecter
+					</button>
 				</div>
 
 				<div class="mt-8 text-center">
@@ -56,8 +59,17 @@
 </template>
 
 <script>
+import {mapActions, mapState} from "vuex";
+import App from "@/App.vue";
+
 export default {
 	name: 'HomeView',
-	components: {}
+	components: {App},
+	computed: {
+		...mapState(['user'])
+	},
+	methods: {
+		...mapActions(['logout']),
+	}
 }
 </script>
