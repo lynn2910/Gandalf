@@ -17,6 +17,9 @@ export default new Vuex.Store({
             console.log("Updating user", user)
             state.user = user;
         },
+        clearMessagesHistory: (state) => {
+            state.messages = [];
+        },
         addMessage: (state, new_message) => {
             state.messages.push(new_message);
         }
@@ -115,7 +118,11 @@ export default new Vuex.Store({
                 }
             ];
 
+            commit('clearMessagesHistory')
             messages.forEach((m) => commit('addMessage', m));
+        },
+        async addMessage({commit}, newMessage) {
+            commit('addMessage', newMessage);
         }
     },
 })
