@@ -1,5 +1,5 @@
 <template>
-	<div id="app" class="text-white max-h-screen max-w-screen">
+	<div id="app" class="text-white max-h-screen max-w-screen overflow-y-hidden">
 
 		<!-- Navigation bar -->
 		<div class="navbar bg-base-100 shadow-sm px-10">
