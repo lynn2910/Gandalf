@@ -11,9 +11,6 @@
 						<h2 class="card-title">Informations du compte</h2>
 						<p>Nom d'utilisateur: <span class="font-semibold">{{ user?.username }}</span></p>
 						<p>Email: <span class="font-semibold">{{ user?.email }}</span></p>
-						<div class="card-actions justify-end mt-4">
-							<button class="btn btn-neutral" @click.prevent="update">Mettre à jour</button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -29,21 +26,10 @@ export default {
 	computed: {
 		...mapState(['user'])
 	},
-	methods: {
-		...mapActions(['fetchUser']),
-		async update() {
-			try {
-				await this.fetchUser()
-				alert("mise à jour réussie")
-			} catch (_) {
-				alert("échec de la mise à jour")
-			}
-		}
-	},
 	async beforeMount() {
 		if (!this.user) {
 			await this.$router.push({name: 'login'})
 		}
-	}
+	},
 }
 </script>
