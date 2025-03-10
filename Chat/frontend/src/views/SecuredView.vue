@@ -4,7 +4,7 @@
 			<h1 class="text-3xl font-bold text-primary mb-4">Chat en temps réel</h1>
 
 			<div ref="chatContainer"
-					 class="bg-base-100 rounded-box shadow-xl h-[600px] overflow-y-auto w-full mb-4 p-4">
+					 class="bg-base-100 rounded-box shadow-xl h-[400px] overflow-y-auto w-full mb-4 p-4">
 
 				<div v-for="(message, index) in messages" :key="index"
 						 :class="message.username === user?.username ? 'chat-end' : 'chat-start'"

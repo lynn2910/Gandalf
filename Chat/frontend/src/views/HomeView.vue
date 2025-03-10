@@ -1,6 +1,6 @@
 <template>
-	<div class="home bg-base-200 min-h-screen flex justify-center items-center">
-		<div class="card bg-base-100 shadow-xl p-10 w-full max-w-4xl">
+	<div class="home bg-base-200 min-h-screen flex justify-center items-center mt-20">
+		<div class="card bg-base-100 shadow-xl p-5 w-full max-w-4xl">
 			<div class="card-body">
 				<h1 class="text-3xl font-bold text-center mb-6">
 					Bienvenue sur notre Application d'Authentification Sécurisée
@@ -15,7 +15,7 @@
 					accessible une fois authentifié.
 				</p>
 
-				<div class="mb-6">
+				<div class="mb-3">
 					<h2 class="text-2xl font-semibold mb-3 text-primary">Fonctionnalités Clés</h2>
 					<ul class="list-disc list-inside text-gray-600 dark:text-gray-300 text-base">
 						<li>
@@ -44,7 +44,7 @@
 					</ul>
 				</div>
 
-				<div class="flex justify-center space-x-4 mt-8">
+				<div class="flex justify-center space-x-4 mt-4">
 					<router-link v-if="!user" :to="{name:'login'}" class="btn btn-primary">
 						Se Connecter
 					</router-link>
