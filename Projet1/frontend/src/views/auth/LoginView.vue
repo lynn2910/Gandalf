@@ -1,6 +1,7 @@
 <template>
-	<div class="hero min-h-screen bg-base-200">
-		<div class="hero-content flex-col lg:flex-row-reverse gap-20 w-2/5">
+	<div
+			class="hero absolute z-0 top-0 left-0 h-screen w-screen lg:relative lg:h-screen bg-base-200 lg:overflow-y-hidden">
+		<div class="hero-content flex-col lg:flex-row-reverse lg:gap-20 w-full lg:w-2/5">
 			<div class="text-center lg:text-left">
 				<h1 class="text-5xl font-bold">Connexion</h1>
 				<p class="py-6">Connectez-vous pour accéder à votre espace personnel.</p>
@@ -45,7 +46,7 @@
 						</fieldset>
 
 						<!-- Login btn -->
-						<div class="form-control mt-6">
+						<div class="form-control mt-6 mx-auto">
 							<button type="submit" class="btn btn-primary">Se Connecter</button>
 						</div>
 					</form>

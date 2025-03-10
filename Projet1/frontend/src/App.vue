@@ -2,7 +2,7 @@
 	<div id="app" class="text-black dark:text-white max-h-screen max-w-screen">
 
 		<!-- Navigation bar -->
-		<div class="navbar bg-base-100 shadow-sm px-10">
+		<div class="navbar absolute top-0 left-0 w-screen z-50 bg-base-100 shadow-sm px-10">
 			<div class="flex-1">
 				<router-link :to="{name:'home'}" class="btn btn-ghost text-xl">Projet | Sessions</router-link>
 			</div>
