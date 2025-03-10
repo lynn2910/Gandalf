@@ -1,5 +1,5 @@
 <template>
-	<div id="app" class="text-black dark:text-white max-h-screen max-w-screen">
+	<div id="app" class="text-black dark:text-white max-h-screen max-w-screen bg-base-200">
 
 		<!-- Navigation bar -->
 		<div class="navbar absolute top-0 left-0 w-screen z-50 bg-base-100 shadow-sm px-10">
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 
-		<div class="bg-base-200 w-full h-4"></div>
+		<div class="bg-base-200 w-full h-10"></div>
 
 		<router-view/>
 	</div>

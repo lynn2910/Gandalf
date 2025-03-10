@@ -1,5 +1,5 @@
 <template>
-	<div class="home bg-base-200 min-h-screen flex justify-center items-center">
+	<div class="home bg-base-200 min-h-screen flex justify-center items-center mt-10">
 		<div class="card bg-base-100 shadow-xl p-10 w-full max-w-xl">
 			<div class="card-body">
 				<h1 class="text-3xl font-bold text-center mb-6">
