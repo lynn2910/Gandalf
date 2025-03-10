@@ -1,0 +1,3 @@
+[submodule "Tokens/24hmans"]
+	path = Tokens/24hmans
+	url = https://github.com/lynn2910/24hmans.git
