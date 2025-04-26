@@ -17,6 +17,35 @@
 			<div class="flex w-full gap-4">
 				<!-- Chat list -->
 				<div class="w-1/4 bg-base-100 rounded-box shadow-xl p-2 overflow-y-auto h-[500px]">
+					<!-- Online users section -->
+					<div class="mb-4">
+						<h3 class="font-bold text-sm uppercase text-gray-500 px-2 mb-2">Utilisateurs en ligne - {{ onlineUsers.length }}</h3>
+						<div class="space-y-2">
+							<!-- Current user (you) -->
+							<div v-if="user" class="flex items-center px-2 py-1">
+								<div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+								<span class="font-medium">{{ user.displayName || user.email || 'Vous' }} (vous)</span>
+							</div>
+
+							<!-- Other online users -->
+							<div v-for="onlineUser in otherOnlineUsers" :key="onlineUser._id" 
+								class="flex items-center px-2 py-1 hover:bg-base-200 rounded-lg cursor-pointer"
+								@click="createNewChat([onlineUser._id])">
+								<div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+								<span>{{ onlineUser.displayName || onlineUser.email || 'Utilisateur sans nom' }}</span>
+							</div>
+
+							<!-- No other users online message -->
+							<div v-if="otherOnlineUsers.length === 0" class="px-2 py-1 text-sm text-gray-500 italic">
+								Aucun autre utilisateur en ligne
+							</div>
+						</div>
+					</div>
+
+					<!-- Divider -->
+					<div class="divider my-2">CONVERSATIONS</div>
+
+					<!-- Chat list items -->
 					<div v-for="chat in chats" :key="chat._id"
 							 @click="selectChat(chat._id)"
 							 class="p-2 hover:bg-base-200 cursor-pointer rounded-lg mb-2"
@@ -79,10 +108,15 @@ import SocketService from "@/services/socket.service";
 export default {
 	name: "SecuredView",
 	computed: {
-		...mapState(['user', 'chats', 'currentChat', 'users']),
+		...mapState(['user', 'chats', 'currentChat', 'users', 'onlineUsers']),
 		availableUsers() {
 			if (!this.user || !this.users) return [];
 			return this.users.filter(u => u._id !== this.user._id);
+		},
+		// Filter out current user from online users
+		otherOnlineUsers() {
+			if (!this.user || !this.onlineUsers) return [];
+			return this.onlineUsers.filter(u => u._id !== this.user._id);
 		}
 	},
 	data() {
@@ -98,7 +132,8 @@ export default {
 			'fetchChat',
 			'createChat',
 			'sendMessage',
-			'fetchUsers'
+			'fetchUsers',
+			'setupOnlineUsersListener'
 		]),
 		async selectChat(chatId) {
 			await this.fetchChat(chatId);
@@ -195,6 +230,9 @@ export default {
 		// Connect to socket
 		SocketService.connect();
 
+		// Set up online users listener
+		this.setupOnlineUsersListener();
+
 		// Update timestamps every minute
 		this.updateInterval = setInterval(this.updateTimestamps, 60000);
 
@@ -209,6 +247,7 @@ export default {
 	},
 	beforeUnmount() {
 		clearInterval(this.updateInterval);
+		SocketService.offOnlineUsersUpdated();
 		SocketService.disconnect();
 	},
 	async beforeMount() {

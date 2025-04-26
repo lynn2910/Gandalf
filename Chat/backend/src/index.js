@@ -100,6 +100,11 @@ app.use((req, res, next) => {
     next();
 });
 
+// Track online users
+const onlineUsers = new Map(); // Map of userId -> user data
+// Make onlineUsers available globally
+global.onlineUsers = onlineUsers;
+
 // Initialize Socket.io
 const io = new Server(server, {
     cors: corsOptions
@@ -118,8 +123,30 @@ io.use((socket, next) => {
 });
 
 // Socket.io connection handler
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+io.on('connection', async (socket) => {
+    const userId = socket.request.session.passport.user;
+    console.log('User connected:', socket.id, 'User ID:', userId);
+
+    try {
+        // Get user data from database
+        const User = mongoose.model('User');
+        const user = await User.findById(userId, 'displayName email');
+
+        if (user) {
+            // Add user to online users
+            onlineUsers.set(userId, {
+                _id: userId,
+                displayName: user.displayName,
+                email: user.email,
+                socketId: socket.id
+            });
+
+            // Broadcast updated online users list to all clients
+            io.emit('online-users-updated', Array.from(onlineUsers.values()));
+        }
+    } catch (error) {
+        console.error('Error getting user data:', error);
+    }
 
     socket.on('join-chat', (chatId) => {
         socket.join(chatId);
@@ -164,6 +191,14 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
+
+        // Remove user from online users
+        if (userId) {
+            onlineUsers.delete(userId);
+
+            // Broadcast updated online users list to all clients
+            io.emit('online-users-updated', Array.from(onlineUsers.values()));
+        }
     });
 });
 

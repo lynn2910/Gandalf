@@ -4,6 +4,17 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 
 module.exports = (app, io) => {
+    // Get online users
+    app.get('/api/online-users', requireLogin, (req, res) => {
+        try {
+            // Access the onlineUsers Map from the parent scope
+            const onlineUsers = Array.from(global.onlineUsers?.values() || []);
+            res.send(onlineUsers);
+        } catch (error) {
+            console.error('Error fetching online users:', error);
+            res.status(500).send({error: 'Error fetching online users'});
+        }
+    });
     // Get all chats for the current user
     app.get('/api/chats', requireLogin, async (req, res) => {
         try {

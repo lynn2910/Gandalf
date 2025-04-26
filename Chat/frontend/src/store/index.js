@@ -12,6 +12,7 @@ export default new Vuex.Store({
         chats: [],
         currentChat: null,
         users: [],
+        onlineUsers: [],
         loading: false,
         error: null
     },
@@ -47,6 +48,9 @@ export default new Vuex.Store({
         },
         addChat: (state, chat) => {
             state.chats.push(chat);
+        },
+        setOnlineUsers: (state, users) => {
+            state.onlineUsers = users;
         }
     },
     actions: {
@@ -77,6 +81,9 @@ export default new Vuex.Store({
                     // Connect to socket when user is fetched
                     SocketService.connect();
 
+                    // Set up online users listener
+                    dispatch('setupOnlineUsersListener');
+
                     // Fetch chats after user is authenticated
                     await dispatch('fetchChats');
                 } else {
@@ -87,6 +94,16 @@ export default new Vuex.Store({
             } finally {
                 commit('setLoading', false);
             }
+        },
+
+        setupOnlineUsersListener({commit}) {
+            // Remove any existing listener to prevent duplicates
+            SocketService.offOnlineUsersUpdated();
+
+            // Listen for online users updates
+            SocketService.onOnlineUsersUpdated((users) => {
+                commit('setOnlineUsers', users);
+            });
         },
         async logout({commit}) {
             commit('setLoading', true);

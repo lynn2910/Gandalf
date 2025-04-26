@@ -71,6 +71,19 @@ class SocketService {
     if (!this.socket) return;
     this.socket.off('new-message');
   }
+
+  onOnlineUsersUpdated(callback) {
+    if (!this.socket) {
+      console.error('Socket not initialized');
+      return;
+    }
+    this.socket.on('online-users-updated', callback);
+  }
+
+  offOnlineUsersUpdated() {
+    if (!this.socket) return;
+    this.socket.off('online-users-updated');
+  }
 }
 
 export default new SocketService();
