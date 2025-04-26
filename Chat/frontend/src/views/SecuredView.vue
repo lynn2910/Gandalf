@@ -8,7 +8,7 @@
 					<ul tabindex="0"
 							class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-60 overflow-y-auto">
 						<li v-for="otherUser in availableUsers" :key="otherUser._id">
-							<a @click="createNewChat([otherUser._id])">{{ otherUser.displayName }}</a>
+							<a @click="createNewChat([otherUser._id])">{{ otherUser.displayName || otherUser.email || 'Utilisateur sans nom' }}</a>
 						</li>
 					</ul>
 				</div>
@@ -133,7 +133,7 @@ export default {
 		},
 		getMessageSenderName(message) {
 			if (message.sender) {
-				return message.sender.displayName;
+				return message.sender.displayName || message.sender.email || 'Utilisateur sans nom';
 			}
 			return 'Inconnu';
 		},
@@ -146,7 +146,8 @@ export default {
 			if (otherParticipants.length === 0) {
 				return 'Notes personnelles';
 			} else if (otherParticipants.length === 1) {
-				return otherParticipants[0].displayName;
+				const participant = otherParticipants[0];
+				return participant.displayName || participant.email || 'Utilisateur sans nom';
 			} else {
 				return `Groupe (${otherParticipants.length + 1})`;
 			}

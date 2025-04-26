@@ -61,7 +61,20 @@ module.exports = (app, io) => {
             // Convert string IDs to ObjectIds
             const participants = participantIds.map(id => new mongoose.Types.ObjectId(id));
 
-            // Create a new chat
+            // Sort participants to ensure consistent comparison
+            participants.sort((a, b) => a.toString().localeCompare(b.toString()));
+
+            // Check if a chat with the same participants already exists
+            const existingChat = await Chat.findOne({
+                participants: { $size: participants.length, $all: participants }
+            }).populate('participants', 'displayName email');
+
+            if (existingChat) {
+                // Return the existing chat instead of creating a new one
+                return res.status(200).send(existingChat);
+            }
+
+            // Create a new chat if no existing chat was found
             const chat = new Chat({
                 participants,
                 messages: []
