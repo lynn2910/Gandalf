@@ -12,26 +12,8 @@ const routes = [
     },
     {
         path: '/auth/',
-        redirect: '/auth/login',
+        name: "login",
         component: () => import("../views/auth/AuthLayout.vue"),
-        children: [
-            {
-                path: "login",
-                name: 'login',
-                meta: {title: "Login"},
-                components: {
-                    auth_body: () => import("../views/auth/LoginView.vue"),
-                }
-            },
-            {
-                path: "signup",
-                name: 'signup',
-                meta: {title: "Créer un compte"},
-                components: {
-                    auth_body: () => import("../views/auth/SignupView.vue"),
-                }
-            }
-        ]
     },
     {
         path: "/secured",

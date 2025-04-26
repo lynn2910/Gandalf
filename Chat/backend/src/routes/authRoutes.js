@@ -14,7 +14,7 @@ module.exports = app => {
             failureRedirect: '/auth/login-failed'
         }),
         (req, res) => {
-            res.redirect('http://localhost:3000/chat');
+            res.redirect('http://localhost:8080/secured');
         }
     );
 
@@ -31,14 +31,14 @@ module.exports = app => {
             failureRedirect: '/auth/login-failed'
         }),
         (req, res) => {
-            res.redirect('http://localhost:3000/chat');
+            res.redirect('http://localhost:8080/secured');
         }
     );
 
     app.get('/auth/logout', (req, res) => {
         req.logout((err) => {
             if (err) return res.status(500).send('Erreur de déconnexion');
-            res.redirect('http://localhost:3000/');
+            res.redirect('http://localhost:8080/');
         });
     });
 
