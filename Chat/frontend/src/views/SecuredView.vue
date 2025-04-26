@@ -15,19 +15,14 @@
 			</div>
 
 			<div class="flex w-full gap-4">
-				<!-- Chat list -->
 				<div class="w-1/4 bg-base-100 rounded-box shadow-xl p-2 overflow-y-auto h-[500px]">
-					<!-- Online users section -->
 					<div class="mb-4">
 						<h3 class="font-bold text-sm uppercase text-gray-500 px-2 mb-2">Utilisateurs en ligne - {{ onlineUsers.length }}</h3>
 						<div class="space-y-2">
-							<!-- Current user (you) -->
 							<div v-if="user" class="flex items-center px-2 py-1">
 								<div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
 								<span class="font-medium">{{ user.displayName || user.email || 'Vous' }} (vous)</span>
 							</div>
-
-							<!-- Other online users -->
 							<div v-for="onlineUser in otherOnlineUsers" :key="onlineUser._id" 
 								class="flex items-center px-2 py-1 hover:bg-base-200 rounded-lg cursor-pointer"
 								@click="createNewChat([onlineUser._id])">
@@ -35,17 +30,13 @@
 								<span>{{ onlineUser.displayName || onlineUser.email || 'Utilisateur sans nom' }}</span>
 							</div>
 
-							<!-- No other users online message -->
 							<div v-if="otherOnlineUsers.length === 0" class="px-2 py-1 text-sm text-gray-500 italic">
 								Aucun autre utilisateur en ligne
 							</div>
 						</div>
 					</div>
 
-					<!-- Divider -->
 					<div class="divider my-2">CONVERSATIONS</div>
-
-					<!-- Chat list items -->
 					<div v-for="chat in chats" :key="chat._id"
 							 @click="selectChat(chat._id)"
 							 class="p-2 hover:bg-base-200 cursor-pointer rounded-lg mb-2"
@@ -62,7 +53,6 @@
 					</div>
 				</div>
 
-				<!-- Chat messages -->
 				<div class="w-3/4">
 					<div ref="chatContainer"
 							 class="bg-base-100 rounded-box shadow-xl h-[400px] overflow-y-auto w-full mb-4 p-4">
@@ -113,7 +103,6 @@ export default {
 			if (!this.user || !this.users) return [];
 			return this.users.filter(u => u._id !== this.user._id);
 		},
-		// Filter out current user from online users
 		otherOnlineUsers() {
 			if (!this.user || !this.onlineUsers) return [];
 			return this.onlineUsers.filter(u => u._id !== this.user._id);
@@ -175,7 +164,6 @@ export default {
 		getChatName(chat) {
 			if (!chat.participants || chat.participants.length === 0) return 'Chat';
 
-			// Filter out current user
 			const otherParticipants = chat.participants.filter(p => p._id !== this.user._id);
 
 			if (otherParticipants.length === 0) {
@@ -217,7 +205,6 @@ export default {
 			}
 		},
 		updateTimestamps() {
-			// Force re-render to update timestamps
 			this.$forceUpdate();
 		}
 	},
@@ -227,20 +214,14 @@ export default {
 		},
 	},
 	async mounted() {
-		// Connect to socket
 		SocketService.connect();
 
-		// Set up online users listener
 		this.setupOnlineUsersListener();
 
-		// Update timestamps every minute
 		this.updateInterval = setInterval(this.updateTimestamps, 60000);
 
-		// Fetch initial data
 		await this.fetchUsers();
 		await this.fetchChats();
-
-		// Select first chat if available
 		if (this.chats.length > 0) {
 			await this.selectChat(this.chats[0]._id);
 		}

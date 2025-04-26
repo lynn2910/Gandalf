@@ -77,14 +77,8 @@ export default new Vuex.Store({
                 let res = await UserService.getUser();
                 if (!res.error) {
                     commit("updateUser", res.data);
-
-                    // Connect to socket when user is fetched
                     SocketService.connect();
-
-                    // Set up online users listener
                     dispatch('setupOnlineUsersListener');
-
-                    // Fetch chats after user is authenticated
                     await dispatch('fetchChats');
                 } else {
                     commit('setError', res.data);

@@ -1,12 +1,8 @@
 const axios = require('axios');
 let BASE_URL = "http://localhost:5000";
-// No need to alert as we have a default value
 
 const axios_client = axios.create({baseURL: BASE_URL});
 
-/**
- * @enum
- */
 export const Method = {
     Get: "GET",
     Post: "POST",
@@ -16,10 +12,6 @@ export const Method = {
 }
 
 export class Request {
-    /**
-     * @param {Method} method
-     * @param {String} route
-     */
     constructor(method, route) {
         this.method = method;
         this.url = route;
@@ -31,11 +23,6 @@ export class Request {
     static delete = (route) => new Request(Method.Delete, route);
     static patch = (route) => new Request(Method.Patch, route);
 
-    /**
-     * Replace args in the route.
-     * @param {Object.<string, string>} route_args
-     * @returns Request
-     */
     args(route_args) {
         Object.entries(route_args)
             .forEach(([key, value]) => {
@@ -45,21 +32,11 @@ export class Request {
         return this;
     }
 
-    /**
-     * Define a body for the request.
-     * @param {any} body
-     * @returns {Request}
-     */
     body(body) {
         this.body = body;
         return this;
     }
 
-    /**
-     * Send the built-up request using the `BASE_URL` or the specified `base_url` argument
-     * @return {Promise<{error: 0 | 1, status: number, data: any}>}
-     * @throws
-     */
     send() {
         return new Promise((resolve, reject) => {
             let call = null;
@@ -88,7 +65,6 @@ export class Request {
                     throw new Error("Unknown method " + this.method);
                 }
             }
-            // Pour que Webstorm soit content
             if (!call) return reject(new Error(`Unknown method ${this.method}`));
             call.then(
                 (res) => {
