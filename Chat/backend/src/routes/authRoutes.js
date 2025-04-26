@@ -10,7 +10,26 @@ module.exports = app => {
 
     app.get(
         '/auth/google/callback',
-        passport.authenticate("google"),
+        passport.authenticate("google", {
+            failureRedirect: '/auth/login-failed'
+        }),
+        (req, res) => {
+            res.redirect('http://localhost:3000/chat');
+        }
+    );
+
+    app.get(
+        '/auth/discord',
+        passport.authenticate("discord", {
+            scope: ["identify", "email"]
+        })
+    );
+
+    app.get(
+        '/auth/discord/callback',
+        passport.authenticate("discord", {
+            failureRedirect: '/auth/login-failed'
+        }),
         (req, res) => {
             res.redirect('http://localhost:3000/chat');
         }
