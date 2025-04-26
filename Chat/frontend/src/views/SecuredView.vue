@@ -2,7 +2,7 @@
 	<div class="hero min-h-screen bg-base-200">
 		<div class="hero-content flex-col w-full max-w-4xl">
 			<div class="flex justify-between items-center w-full mb-4">
-				<h1 class="text-3xl font-bold text-primary">Chat en temps réel</h1>
+				<h1 class="text-3xl font-bold text-primary">Messagerie instantanée en temps réel</h1>
 				<div class="dropdown dropdown-end">
 					<label tabindex="0" class="btn btn-primary">Nouvelle conversation</label>
 					<ul tabindex="0"

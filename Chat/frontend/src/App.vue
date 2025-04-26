@@ -3,13 +3,13 @@
 		<!-- Navigation bar -->
 		<div class="navbar absolute bg-base-100 shadow-sm px-10 flex flex-row z-50">
 			<div class="flex-1">
-				<router-link :to="{name:'home'}" class="btn btn-ghost text-xl">Projet | Sessions</router-link>
+				<router-link :to="{name:'home'}" class="btn btn-ghost text-xl">OAuth2 & Chat</router-link>
 			</div>
 			<div class="flex-none">
 				<ul class="menu menu-horizontal px-10">
 					<li>
 						<router-link :to="{name:'secured'}" :disabled="user === null" type="button" class="btn btn-soft">
-							Dashboard
+							Chat
 						</router-link>
 					</li>
 					<li></li>

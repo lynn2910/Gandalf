@@ -3,13 +3,13 @@
 			class="hero absolute z-0 top-0 left-0 h-screen w-screen lg:relative lg:h-screen bg-base-200 lg:overflow-y-hidden">
 		<div class="hero-content flex-col lg:flex-row-reverse lg:gap-20 w-full lg:w-2/5">
 			<div class="text-center lg:text-left">
-				<h1 class="text-5xl font-bold">Connexion</h1>
-				<p class="py-6">Connectez-vous pour accéder à votre espace personnel.</p>
+				<h1 class="text-5xl font-bold">Authentification OAuth2</h1>
+				<p class="py-6">Connectez-vous avec Google ou Discord pour accéder au chat en temps réel.</p>
 			</div>
 			<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 				<div class="card-body">
-					<h2 class="text-2xl font-semibold text-center mb-4">Connexion</h2>
-					
+					<h2 class="text-2xl font-semibold text-center mb-4">Choisissez votre méthode de connexion</h2>
+
 					<div class="flex flex-col gap-2">
 						<a href="http://localhost:5000/auth/google" class="btn btn-outline">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google"
