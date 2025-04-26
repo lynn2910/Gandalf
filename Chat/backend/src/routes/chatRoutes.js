@@ -58,7 +58,7 @@ module.exports = (app, io) => {
             }
 
             // Convert string IDs to ObjectIds
-            const participants = participantIds.map(id => mongoose.Types.ObjectId(id));
+            const participants = participantIds.map(id => new mongoose.Types.ObjectId(id));
 
             // Create a new chat
             const chat = new Chat({
