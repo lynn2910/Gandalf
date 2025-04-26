@@ -45,10 +45,10 @@ export default {
 		}
 	},
 	async beforeMount() {
-		// try {
-		// 	await this.fetchUser();
-		// } catch (_) {
-		// }
+		try {
+			await this.fetchUser();
+		} catch (_) {
+		}
 	},
 	watch: {
 		'$route': {
