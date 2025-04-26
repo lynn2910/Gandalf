@@ -1,13 +1,13 @@
 import {Request} from "@/services/axios.service";
 
 async function login(email, password) {
-    return await Request.post("/login")
+    return await Request.post("/auth/login")
         .body({email, password})
         .send()
 }
 
 async function register(username, email, password) {
-    return await Request.post("/register")
+    return await Request.post("/auth/register")
         .body({username, email, password})
         .send()
 }

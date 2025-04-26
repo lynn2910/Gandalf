@@ -39,6 +39,7 @@ function setupExpressApp() {
 
     app.use(cors(corsOptions));
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
 
     return {app, server, corsOptions};
 }
@@ -189,6 +190,8 @@ async function startServer() {
 
     require('./routes/authRoutes')(app);
     require('./routes/chatRoutes')(app, io);
+
+    app.use('/api/performance', require('./routes/performanceRoutes'));
 
     app.get('/', (req, res) => {
         res.send('Salut!');

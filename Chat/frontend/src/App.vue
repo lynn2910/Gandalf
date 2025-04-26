@@ -1,5 +1,5 @@
 <template>
-	<div id="app" class="text-black dark:text-white max-h-screen max-w-screen">
+	<div id="app" class="text-black dark:text-white h-screen max-w-screen">
 		<!-- Navigation bar -->
 		<div class="navbar absolute bg-base-100 shadow-sm px-10 flex flex-row z-50">
 			<div class="flex-1">
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 
-		<div class="w-full bg-base-200 overflow-y-scroll h-fit">
+		<div class="w-full h-full bg-base-200 overflow-y-scroll">
 			<router-view/>
 		</div>
 

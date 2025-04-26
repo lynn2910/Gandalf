@@ -2,13 +2,55 @@
 	<div
 			class="hero absolute z-0 top-0 left-0 h-screen w-screen lg:relative lg:h-screen bg-base-200 lg:overflow-y-hidden">
 		<div class="hero-content flex-col lg:flex-row-reverse lg:gap-20 w-full lg:w-2/5">
-			<div class="text-center lg:text-left">
-				<h1 class="text-5xl font-bold">Authentification OAuth2</h1>
-				<p class="py-6">Connectez-vous avec Google ou Discord pour accéder au chat en temps réel.</p>
-			</div>
+			<!--			<div class="text-center lg:text-left">-->
+			<!--				<h1 class="text-5xl font-bold">Authentification</h1>-->
+			<!--				<p class="py-6">Connectez-vous avec votre email et mot de passe ou via Google ou Discord pour accéder au chat en temps réel.</p>-->
+			<!--			</div>-->
 			<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 				<div class="card-body">
-					<h2 class="text-2xl font-semibold text-center mb-4">Choisissez votre méthode de connexion</h2>
+					<h2 class="text-2xl font-semibold text-center mb-4">Connexion</h2>
+
+					<form @submit.prevent="login">
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text">Email</span>
+							</label>
+							<input
+									type="email"
+									placeholder="Email"
+									class="input input-bordered"
+									v-model="loginForm.email"
+									required
+							/>
+						</div>
+
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text">Mot de passe</span>
+							</label>
+							<input
+									type="password"
+									placeholder="Mot de passe"
+									class="input input-bordered"
+									v-model="loginForm.password"
+									required
+							/>
+						</div>
+
+						<div class="form-control mt-6">
+							<button type="submit" class="btn btn-primary" :disabled="loading">
+								{{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+							</button>
+						</div>
+
+						<div v-if="error" class="alert alert-error mt-4">
+							<div>
+								<span>{{ error }}</span>
+							</div>
+						</div>
+					</form>
+
+					<div class="divider">OU</div>
 
 					<div class="flex flex-col gap-2">
 						<a href="http://localhost:5000/auth/google" class="btn btn-outline">
@@ -53,13 +95,36 @@ export default {
 			loginForm: {
 				email: '',
 				password: ''
-			}
+			},
+			error: null,
+			loading: false
 		}
 	},
 	methods: {
 		...mapActions(['loginUser']),
-		login() {
-			this.loginUser(this.loginForm)
+		async login() {
+			this.error = null;
+			this.loading = true;
+
+			try {
+				// Validation
+				if (!this.loginForm.email || !this.loginForm.password) {
+					this.error = 'Tous les champs sont obligatoires';
+					return;
+				}
+
+				// Login user
+				await this.loginUser(this.loginForm);
+
+				// If user is set, login was successful
+				if (!this.user) {
+					this.error = 'Email ou mot de passe incorrect';
+				}
+			} catch (error) {
+				this.error = error.message || 'Erreur lors de la connexion';
+			} finally {
+				this.loading = false;
+			}
 		}
 	},
 	async beforeMount() {

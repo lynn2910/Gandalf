@@ -5,7 +5,9 @@ const userSchema = new Schema({
   googleId: { type: String },
   discordId: { type: String },
   displayName: String,
-  email: String
+  email: String,
+  password: String,
+  localAuth: Boolean
 });
 
 const User = mongoose.model('User', userSchema);
