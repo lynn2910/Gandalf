@@ -1,27 +1,52 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import UserService from "@/services/user.service";
+import ChatService from "@/services/chat.service";
+import SocketService from "@/services/socket.service";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        user: {
-            username: "Gemini",
-            email: "gemini@gmail.com",
-        },
-        messages: []
+        user: null,
+        chats: [],
+        currentChat: null,
+        users: [],
+        loading: false,
+        error: null
     },
     mutations: {
         updateUser: (state, user) => {
             console.log("Updating user", user)
             state.user = user;
         },
-        clearMessagesHistory: (state) => {
-            state.messages = [];
+        setChats: (state, chats) => {
+            state.chats = chats;
         },
-        addMessage: (state, new_message) => {
-            state.messages.push(new_message);
+        setCurrentChat: (state, chat) => {
+            state.currentChat = chat;
+        },
+        addMessageToChat: (state, { chatId, message }) => {
+            const chat = state.chats.find(c => c._id === chatId);
+            if (chat) {
+                chat.messages.push(message);
+            }
+
+            if (state.currentChat && state.currentChat._id === chatId) {
+                state.currentChat.messages.push(message);
+            }
+        },
+        setUsers: (state, users) => {
+            state.users = users;
+        },
+        setLoading: (state, loading) => {
+            state.loading = loading;
+        },
+        setError: (state, error) => {
+            state.error = error;
+        },
+        addChat: (state, chat) => {
+            state.chats.push(chat);
         }
     },
     actions: {
@@ -42,87 +67,148 @@ export default new Vuex.Store({
                 console.error(res.data)
             }
         },
-        async fetchUser({commit}) {
-            let res = await UserService.getUser();
-            if (!res.error) {
-                commit("updateUser", res.data);
-            } else {
-                console.error(res.data)
+        async fetchUser({commit, dispatch}) {
+            commit('setLoading', true);
+            try {
+                let res = await UserService.getUser();
+                if (!res.error) {
+                    commit("updateUser", res.data);
+
+                    // Connect to socket when user is fetched
+                    SocketService.connect();
+
+                    // Fetch chats after user is authenticated
+                    await dispatch('fetchChats');
+                } else {
+                    commit('setError', res.data);
+                }
+            } catch (error) {
+                commit('setError', error.message);
+            } finally {
+                commit('setLoading', false);
             }
         },
         async logout({commit}) {
-            let res = await UserService.logout();
-            if (!res.error) {
-                commit("updateUser", null);
-            } else {
-                console.error(res.data)
+            commit('setLoading', true);
+            try {
+                let res = await UserService.logout();
+                if (!res.error) {
+                    commit("updateUser", null);
+                    commit('setChats', []);
+                    commit('setCurrentChat', null);
+
+                    // Disconnect socket when user logs out
+                    SocketService.disconnect();
+                } else {
+                    commit('setError', res.data);
+                }
+            } catch (error) {
+                commit('setError', error.message);
+            } finally {
+                commit('setLoading', false);
             }
         },
-        async getMessages({commit}) {
-            // TODO
-            let messages = [
-                {
-                    username: "Alice",
-                    content: "Salut tout le monde ! 👋",
-                    timestamp: "2024-01-20T10:00:00Z"
-                },
-                {
-                    username: "Bob",
-                    content: "Hello Alice ! Comment ça va aujourd'hui ?",
-                    timestamp: "2024-01-20T10:01:30Z"
-                },
-                {
-                    username: "Alice",
-                    content: "Super, merci ! Je suis en train de tester ce chat, c'est top !",
-                    timestamp: "2024-01-20T10:02:00Z"
-                },
-                {
-                    username: "Charlie",
-                    content: "Salut ! Je me joins à la conversation. Ce chat a l'air cool 😎",
-                    timestamp: "2024-01-20T10:03:15Z"
-                },
-                {
-                    username: "Bob",
-                    content: "Bienvenue Charlie !  Oui, c'est un bon exercice pour comprendre les websockets et OAuth2.",
-                    timestamp: "2024-01-20T10:04:00Z"
-                },
-                {
-                    username: "Alice",
-                    content: "Absolument ! Et l'authentification avec Google est très pratique.",
-                    timestamp: "2024-01-20T10:05:00Z"
-                },
-                {
-                    username: "Charlie",
-                    content: "Je suis d'accord.  Question : est-ce qu'on stocke l'historique des messages ?",
-                    timestamp: "2024-01-20T10:06:30Z"
-                },
-                {
-                    username: "Bob",
-                    content: "Oui, l'historique est stocké dans MongoDB, comme spécifié dans les consignes.",
-                    timestamp: "2024-01-20T10:07:00Z"
-                },
-                {
-                    username: "Alice",
-                    content: "Parfait, c'est rassurant de savoir que les conversations sont conservées.",
-                    timestamp: "2024-01-20T10:08:00Z"
-                },
-                {
-                    username: "Charlie",
-                    content: "Ok, super ! Merci pour l'info Bob 👍",
-                    timestamp: "2024-01-20T10:09:00Z"
-                },
-                {
-                    username: "Jsp",
-                    content: "C'est clairement de l'IA :)",
-                    timestamp: "2025-03-06T14:08:47.151Z"
+        async fetchChats({commit}) {
+            commit('setLoading', true);
+            try {
+                const res = await ChatService.getChats();
+                if (!res.error) {
+                    commit('setChats', res.data);
+                } else {
+                    commit('setError', res.data);
                 }
-            ];
-
-            commit('clearMessagesHistory')
-            messages.forEach((m) => commit('addMessage', m));
+            } catch (error) {
+                commit('setError', error.message);
+            } finally {
+                commit('setLoading', false);
+            }
         },
-        async addMessage({commit}, newMessage) {
-            commit('addMessage', newMessage);
+        async fetchChat({commit}, chatId) {
+            commit('setLoading', true);
+            try {
+                const res = await ChatService.getChat(chatId);
+                if (!res.error) {
+                    commit('setCurrentChat', res.data);
+
+                    // Join the chat room via socket
+                    SocketService.joinChat(chatId);
+
+                    // Listen for new messages
+                    SocketService.onNewMessage(({chatId, message}) => {
+                        commit('addMessageToChat', {chatId, message});
+                    });
+                } else {
+                    commit('setError', res.data);
+                }
+            } catch (error) {
+                commit('setError', error.message);
+            } finally {
+                commit('setLoading', false);
+            }
+        },
+        async createChat({commit}, participantIds) {
+            commit('setLoading', true);
+            try {
+                const res = await ChatService.createChat(participantIds);
+                if (!res.error) {
+                    commit('addChat', res.data);
+                    return res.data;
+                } else {
+                    commit('setError', res.data);
+                    return null;
+                }
+            } catch (error) {
+                commit('setError', error.message);
+                return null;
+            } finally {
+                commit('setLoading', false);
+            }
+        },
+        async sendMessage({commit, state}, {chatId, content}) {
+            try {
+                const res = await ChatService.sendMessage(chatId, content);
+                if (res.error) {
+                    commit('setError', res.data);
+                }
+                // The message will be added via socket
+            } catch (error) {
+                commit('setError', error.message);
+            }
+        },
+        async fetchUsers({commit}) {
+            commit('setLoading', true);
+            try {
+                const res = await ChatService.getUsers();
+                if (!res.error) {
+                    commit('setUsers', res.data);
+                } else {
+                    commit('setError', res.data);
+                }
+            } catch (error) {
+                commit('setError', error.message);
+            } finally {
+                commit('setLoading', false);
+            }
+        },
+        // For backward compatibility with the current UI
+        async getMessages({state, dispatch}) {
+            if (state.currentChat) {
+                return state.currentChat.messages;
+            }
+            await dispatch('fetchChats');
+            if (state.chats.length > 0) {
+                await dispatch('fetchChat', state.chats[0]._id);
+                return state.currentChat?.messages || [];
+            }
+            return [];
+        },
+        async addMessage({dispatch, state}, newMessage) {
+            if (state.currentChat) {
+                await dispatch('sendMessage', {
+                    chatId: state.currentChat._id,
+                    content: newMessage.content
+                });
+            }
         }
     },
 })

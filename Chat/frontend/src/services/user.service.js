@@ -15,13 +15,11 @@ async function register(username, email, password) {
 }
 
 async function getUser() {
-    // TODO
-    return await Request.get("/user").send();
+    return await Request.get("/api/current_user").send();
 }
 
 async function logout() {
-    // TODO
-    return await Request.get("/logout").send();
+    return await Request.get("/auth/logout").send();
 }
 
 export default {login, register, getUser, logout};

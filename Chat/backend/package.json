@@ -11,7 +11,11 @@
     "mongoose": "^8.12.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "passport-discord": "^0.1.4"
+    "passport-discord": "^0.1.4",
+    "connect-redis": "^7.1.1",
+    "express-session": "^1.18.0",
+    "redis": "^4.6.13",
+    "socket.io": "^4.7.5"
   },
   "scripts": {
     "start": "node src/index.js",
