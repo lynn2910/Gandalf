@@ -27,7 +27,7 @@ export default new Vuex.Store({
         setCurrentChat: (state, chat) => {
             state.currentChat = chat;
         },
-        addMessageToChat: (state, { chatId, message }) => {
+        addMessageToChat: (state, {chatId, message}) => {
             const chat = state.chats.find(c => c._id === chatId);
             if (chat) {
                 chat.messages.push(message);
@@ -91,10 +91,8 @@ export default new Vuex.Store({
         },
 
         setupOnlineUsersListener({commit}) {
-            // Remove any existing listener to prevent duplicates
             SocketService.offOnlineUsersUpdated();
 
-            // Listen for online users updates
             SocketService.onOnlineUsersUpdated((users) => {
                 commit('setOnlineUsers', users);
             });
@@ -107,8 +105,6 @@ export default new Vuex.Store({
                     commit("updateUser", null);
                     commit('setChats', []);
                     commit('setCurrentChat', null);
-
-                    // Disconnect socket when user logs out
                     SocketService.disconnect();
                 } else {
                     commit('setError', res.data);
@@ -140,14 +136,8 @@ export default new Vuex.Store({
                 const res = await ChatService.getChat(chatId);
                 if (!res.error) {
                     commit('setCurrentChat', res.data);
-
-                    // Remove previous message listener to prevent duplicates
                     SocketService.offNewMessage();
-
-                    // Join the chat room via socket
                     SocketService.joinChat(chatId);
-
-                    // Listen for new messages
                     SocketService.onNewMessage(({chatId, message}) => {
                         commit('addMessageToChat', {chatId, message});
                     });
@@ -184,7 +174,6 @@ export default new Vuex.Store({
                 if (res.error) {
                     commit('setError', res.data);
                 }
-                // The message will be added via socket
             } catch (error) {
                 commit('setError', error.message);
             }
@@ -204,7 +193,6 @@ export default new Vuex.Store({
                 commit('setLoading', false);
             }
         },
-        // For backward compatibility with the current UI
         async getMessages({state, dispatch}) {
             if (state.currentChat) {
                 return state.currentChat.messages;

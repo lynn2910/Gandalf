@@ -8,8 +8,7 @@
 			<div class="flex-none">
 				<ul class="menu menu-horizontal px-10">
 					<li>
-						<router-link :to="{name:'secured'}" :disabled="user === null" type="button"
-												 class="btn btn-soft">
+						<router-link :to="{name:'secured'}" :disabled="user === null" type="button" class="btn btn-soft">
 							Dashboard
 						</router-link>
 					</li>
