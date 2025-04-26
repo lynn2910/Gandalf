@@ -6,10 +6,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const { createClient } = require('redis');
+const {createClient} = require('redis');
 const RedisStore = require('connect-redis').default;
 const http = require('http');
-const { Server } = require('socket.io');
+const {Server} = require('socket.io');
 require("./models/User");
 require("./models/Chat");
 const passport = require('passport');
@@ -29,7 +29,7 @@ const server = http.createServer(app);
 
 // Configure CORS
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:8080'],
+    origin: ['http://localhost:3000', 'http://localhost:5000', 'http://localhost:8080'],
     methods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     credentials: true,
     optionsSuccessStatus: 204
@@ -60,7 +60,7 @@ try {
     // Connect to Redis
     redisClient.connect().then(() => {
         console.log('Redis client connected');
-        sessionStore = new RedisStore({ client: redisClient });
+        sessionStore = new RedisStore({client: redisClient});
     }).catch(err => {
         console.error('Failed to connect to Redis:', err);
         // Use memory store as fallback
@@ -74,8 +74,8 @@ try {
     console.log('Using memory store for sessions');
 }
 
-// Configure session with store (Redis or memory)
-app.use(session({
+// Create session middleware
+const sessionMiddleware = session({
     store: sessionStore || new session.MemoryStore(),
     secret: keys.cookieKey,
     resave: false,
@@ -85,7 +85,10 @@ app.use(session({
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     }
-}));
+});
+
+// Use session middleware for Express
+app.use(sessionMiddleware);
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -102,10 +105,13 @@ const io = new Server(server, {
     cors: corsOptions
 });
 
+// Use session middleware with Socket.io
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+io.use(wrap(sessionMiddleware));
+
 // Socket.io middleware for authentication
 io.use((socket, next) => {
-    const session = socket.request.session;
-    if (session && session.passport && session.passport.user) {
+    if (socket.request.session && socket.request.session.passport && socket.request.session.passport.user) {
         return next();
     }
     return next(new Error('Unauthorized'));
@@ -122,7 +128,7 @@ io.on('connection', (socket) => {
 
     socket.on('send-message', async (data) => {
         try {
-            const { chatId, message } = data;
+            const {chatId, message} = data;
             const Chat = mongoose.model('Chat');
 
             // Save message to database

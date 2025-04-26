@@ -5,7 +5,8 @@
 				<h1 class="text-3xl font-bold text-primary">Chat en temps réel</h1>
 				<div class="dropdown dropdown-end">
 					<label tabindex="0" class="btn btn-primary">Nouvelle conversation</label>
-					<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-60 overflow-y-auto">
+					<ul tabindex="0"
+							class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-60 overflow-y-auto">
 						<li v-for="otherUser in availableUsers" :key="otherUser._id">
 							<a @click="createNewChat([otherUser._id])">{{ otherUser.displayName }}</a>
 						</li>
@@ -16,10 +17,10 @@
 			<div class="flex w-full gap-4">
 				<!-- Chat list -->
 				<div class="w-1/4 bg-base-100 rounded-box shadow-xl p-2 overflow-y-auto h-[500px]">
-					<div v-for="chat in chats" :key="chat._id" 
-						 @click="selectChat(chat._id)"
-						 class="p-2 hover:bg-base-200 cursor-pointer rounded-lg mb-2"
-						 :class="{'bg-base-200': currentChat && currentChat._id === chat._id}">
+					<div v-for="chat in chats" :key="chat._id"
+							 @click="selectChat(chat._id)"
+							 class="p-2 hover:bg-base-200 cursor-pointer rounded-lg mb-2"
+							 :class="{'bg-base-200': currentChat && currentChat._id === chat._id}">
 						<div class="font-bold">
 							{{ getChatName(chat) }}
 						</div>
@@ -35,7 +36,7 @@
 				<!-- Chat messages -->
 				<div class="w-3/4">
 					<div ref="chatContainer"
-						 class="bg-base-100 rounded-box shadow-xl h-[400px] overflow-y-auto w-full mb-4 p-4">
+							 class="bg-base-100 rounded-box shadow-xl h-[400px] overflow-y-auto w-full mb-4 p-4">
 
 						<div v-if="!currentChat" class="flex items-center justify-center h-full">
 							<p class="text-lg opacity-50">Sélectionnez une conversation ou créez-en une nouvelle</p>
@@ -43,8 +44,8 @@
 
 						<template v-else>
 							<div v-for="(message, index) in currentChat.messages" :key="index"
-								 :class="isCurrentUserMessage(message) ? 'chat-end' : 'chat-start'"
-								 class="chat"
+									 :class="isCurrentUserMessage(message) ? 'chat-end' : 'chat-start'"
+									 class="chat"
 							>
 								<div class="chat-header">
 									<p class="font-bold">{{ getMessageSenderName(message) }}</p>
@@ -61,8 +62,9 @@
 
 					<div class="join w-full">
 						<input type="text" placeholder="Votre message..." class="input input-bordered join-item w-full"
-							 v-model="newMessage" @keyup.enter="sendMessage" :disabled="!currentChat"/>
-						<button class="btn btn-primary join-item" @click="sendMessage" :disabled="!currentChat">Envoyer</button>
+									 v-model="newMessage" @keyup.enter="sendMessageInternal" :disabled="!currentChat"/>
+						<button class="btn btn-primary join-item" @click="sendMessageInternal" :disabled="!currentChat">Envoyer
+						</button>
 					</div>
 				</div>
 			</div>
@@ -91,11 +93,11 @@ export default {
 	},
 	methods: {
 		...mapActions([
-			'fetchUser', 
-			'fetchChats', 
-			'fetchChat', 
-			'createChat', 
-			'sendMessage', 
+			'fetchUser',
+			'fetchChats',
+			'fetchChat',
+			'createChat',
+			'sendMessage',
 			'fetchUsers'
 		]),
 		async selectChat(chatId) {
@@ -108,13 +110,14 @@ export default {
 				await this.selectChat(chat._id);
 			}
 		},
-		async sendMessage() {
+		async sendMessageInternal() {
 			if (this.newMessage.trim() !== '' && this.currentChat) {
+				const content = this.newMessage.trim();
+				this.newMessage = '';
 				await this.sendMessage({
 					chatId: this.currentChat._id,
-					content: this.newMessage.trim()
+					content: content
 				});
-				this.newMessage = '';
 			}
 		},
 		scrollToBottom() {

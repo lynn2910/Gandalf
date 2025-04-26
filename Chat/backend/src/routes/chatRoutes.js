@@ -10,47 +10,48 @@ module.exports = (app, io) => {
             const chats = await Chat.find({
                 participants: req.user._id
             })
-            .populate('participants', 'displayName email')
-            .populate({
-                path: 'messages.sender',
-                select: 'displayName email'
-            });
+                .populate('participants', 'displayName email')
+                .populate({
+                    path: 'messages.sender',
+                    select: 'displayName email'
+                });
 
             res.send(chats);
         } catch (error) {
             console.error('Error fetching chats:', error);
-            res.status(500).send({ error: 'Error fetching chats' });
+            res.status(500).send({error: 'Error fetching chats'});
         }
     });
 
     // Get a specific chat by ID
     app.get('/api/chat/:id', requireLogin, async (req, res) => {
+        console.log("FUCK THIS SHIT I'M OUT")
         try {
             const chat = await Chat.findOne({
                 _id: req.params.id,
                 participants: req.user._id
             })
-            .populate('participants', 'displayName email')
-            .populate({
-                path: 'messages.sender',
-                select: 'displayName email'
-            });
+                .populate('participants', 'displayName email')
+                .populate({
+                    path: 'messages.sender',
+                    select: 'displayName email'
+                });
 
             if (!chat) {
-                return res.status(404).send({ error: 'Chat not found' });
+                return res.status(404).send({error: 'Chat not found'});
             }
 
             res.send(chat);
         } catch (error) {
             console.error('Error fetching chat:', error);
-            res.status(500).send({ error: 'Error fetching chat' });
+            res.status(500).send({error: 'Error fetching chat'});
         }
     });
 
     // Create a new chat
     app.post('/api/chat', requireLogin, async (req, res) => {
         try {
-            const { participantIds } = req.body;
+            const {participantIds} = req.body;
 
             // Ensure the current user is included in participants
             if (!participantIds.includes(req.user._id.toString())) {
@@ -75,14 +76,14 @@ module.exports = (app, io) => {
             res.status(201).send(populatedChat);
         } catch (error) {
             console.error('Error creating chat:', error);
-            res.status(500).send({ error: 'Error creating chat' });
+            res.status(500).send({error: 'Error creating chat'});
         }
     });
 
     // Add a message to a chat
     app.post('/api/chat/:id/message', requireLogin, async (req, res) => {
         try {
-            const { content } = req.body;
+            const {content} = req.body;
 
             const chat = await Chat.findOne({
                 _id: req.params.id,
@@ -90,7 +91,7 @@ module.exports = (app, io) => {
             });
 
             if (!chat) {
-                return res.status(404).send({ error: 'Chat not found' });
+                return res.status(404).send({error: 'Chat not found'});
             }
 
             // Add the message
@@ -116,7 +117,7 @@ module.exports = (app, io) => {
             res.status(201).send(newMessage);
         } catch (error) {
             console.error('Error adding message:', error);
-            res.status(500).send({ error: 'Error adding message' });
+            res.status(500).send({error: 'Error adding message'});
         }
     });
 
@@ -127,7 +128,7 @@ module.exports = (app, io) => {
             res.send(users);
         } catch (error) {
             console.error('Error fetching users:', error);
-            res.status(500).send({ error: 'Error fetching users' });
+            res.status(500).send({error: 'Error fetching users'});
         }
     });
 };

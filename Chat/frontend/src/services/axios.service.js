@@ -1,5 +1,5 @@
 const axios = require('axios');
-let BASE_URL = process.env.VUE_APP_AXIOS_BASE_URL || "http://localhost:5000";
+let BASE_URL = "http://localhost:5000";
 // No need to alert as we have a default value
 
 const axios_client = axios.create({baseURL: BASE_URL});
@@ -96,7 +96,11 @@ export class Request {
                 },
                 (err) => {
                     console.error('API Error:', err);
-                    return resolve({error: 1, status: err.response?.status || 500, data: err.response?.data || err.message})
+                    return resolve({
+                        error: 1,
+                        status: err.response?.status || 500,
+                        data: err.response?.data || err.message
+                    })
                 },
             );
         })
