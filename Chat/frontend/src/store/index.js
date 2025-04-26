@@ -130,6 +130,9 @@ export default new Vuex.Store({
                 if (!res.error) {
                     commit('setCurrentChat', res.data);
 
+                    // Remove previous message listener to prevent duplicates
+                    SocketService.offNewMessage();
+
                     // Join the chat room via socket
                     SocketService.joinChat(chatId);
 

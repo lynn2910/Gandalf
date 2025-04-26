@@ -130,21 +130,31 @@ io.on('connection', (socket) => {
         try {
             const {chatId, message} = data;
             const Chat = mongoose.model('Chat');
+            const userId = socket.request.session.passport.user;
 
             // Save message to database
             const chat = await Chat.findById(chatId);
             if (chat) {
                 chat.messages.push({
                     content: message.content,
-                    sender: message.sender,
+                    sender: userId, // Use the authenticated user's ID from the session
                     timestamp: new Date()
                 });
                 await chat.save();
 
+                // Get the populated message with sender information
+                const populatedChat = await Chat.findById(chatId)
+                    .populate({
+                        path: 'messages.sender',
+                        select: 'displayName email'
+                    });
+
+                const newMessage = populatedChat.messages[populatedChat.messages.length - 1];
+
                 // Broadcast message to all users in the chat
                 io.to(chatId).emit('new-message', {
                     chatId,
-                    message: chat.messages[chat.messages.length - 1]
+                    message: newMessage
                 });
             }
         } catch (error) {

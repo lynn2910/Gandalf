@@ -103,8 +103,14 @@ module.exports = (app, io) => {
 
             await chat.save();
 
-            // Get the newly added message
-            const newMessage = chat.messages[chat.messages.length - 1];
+            // Get the newly added message and populate sender information
+            const populatedChat = await Chat.findById(chat._id)
+                .populate({
+                    path: 'messages.sender',
+                    select: 'displayName email'
+                });
+
+            const newMessage = populatedChat.messages[populatedChat.messages.length - 1];
 
             // Emit the message to all participants via Socket.io
             if (io) {
@@ -114,6 +120,7 @@ module.exports = (app, io) => {
                 });
             }
 
+            // Send the populated message back to the client
             res.status(201).send(newMessage);
         } catch (error) {
             console.error('Error adding message:', error);
