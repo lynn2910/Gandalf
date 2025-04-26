@@ -39,6 +39,8 @@ Voici les étapes à suivre pour installer et exécuter le projet :
    ```
 2. **Se référrer au `README.md` du dépôt `24hmans`**
 
+> **Lien du dépôt github de la SAE:** https://github.com/lynn2910/24hmans.git
+
 ## Auteurs 🧑‍💻
 
 * Cédric COLIN

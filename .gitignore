@@ -3,3 +3,5 @@
 **/yarn.lock
 **/config.json
 **/.env
+
+Chat/backend/src/config
