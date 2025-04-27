@@ -1,4 +1,4 @@
-# Projet d'Authentification et de Gestion des Sessions (Vue.js & Node.js)
+# Projet d'Authentification et de Gestion des Sessions
 
 ## Description Générale du Projet 📖
 
