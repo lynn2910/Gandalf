@@ -72,14 +72,14 @@ ainsi qu'une vidéo de démonstration de ses fonctionnalités.
 * **Description :** Mise en place d'une authentification stateless utilisant les JSON Web Tokens, avec gestion du token
   côté client.
 * [Accéder au README détaillé de ce mini-projet](Chat/README.md)
-* [Regarder la démo sur YouTube](https://youtu.be/NlRmwO79oRY)
+* [Regarder la démo sur YouTube](https://youtu.be/JFBEWBJ5Qvg)
 
 ### Mini-projet 3 : Authentification OAuth2 et Chat en Temps Réel
 
 * **Description :** Intégration de l'authentification via OAuth2 (Google) et développement d'un système de chat temps
   réel avec gestion des données et mise en cache.
 * [Accéder au README détaillé de ce mini-projet](Tokens/README.md)
-* [Regarder la démo sur YouTube](https://youtu.be/JFBEWBJ5Qvg)
+* [Regarder la démo sur YouTube](https://youtu.be/NlRmwO79oRY)
 
 ## Installation et Exécution ⚙️
 
