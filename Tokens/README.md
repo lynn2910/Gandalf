@@ -78,7 +78,7 @@ Le projet de SAE sera alors également cloné.
 
 Il est **indispensable de lire attentivement le fichier `README.md` situé à la racine du dépôt `Tokens/24hmans`**.
 Ce fichier
-contient toutes les instructions pour configurer et exécuter l'ensemble du projet SAE.
+contient toutes les instructions nécessaires pour configurer et exécuter l'ensemble du projet SAE.
 
 ## Auteurs 🧑‍💻
 
