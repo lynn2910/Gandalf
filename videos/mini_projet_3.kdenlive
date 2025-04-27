@@ -1053,7 +1053,7 @@ Temps moyen: 1.77 ms&lt;/content>
   <property name="kdenlive:sequenceproperties.audioTarget">1</property>
   <property name="kdenlive:sequenceproperties.disablepreview">0</property>
   <property name="kdenlive:sequenceproperties.position">20275</property>
-  <property name="kdenlive:sequenceproperties.scrollPos">1574</property>
+  <property name="kdenlive:sequenceproperties.scrollPos">1454</property>
   <property name="kdenlive:sequenceproperties.tracks">4</property>
   <property name="kdenlive:sequenceproperties.verticalzoom">1</property>
   <property name="kdenlive:sequenceproperties.videoTarget">2</property>
@@ -1419,6 +1419,23 @@ Temps moyen: 1.77 ms&lt;/content>
   <property name="kdenlive:docproperties.opensequences">{20847c91-23e7-4076-865d-bf21369b2a64}</property>
   <property name="kdenlive:docproperties.activetimeline">{20847c91-23e7-4076-865d-bf21369b2a64}</property>
   <property name="kdenlive:docproperties.renderurl">C:/Users/cedic/Videos/mini_projet_3.mp4</property>
+  <property name="kdenlive:docproperties.rendercategory">Generic (HD for web, mobile devices...)</property>
+  <property name="kdenlive:docproperties.rendercustomquality">-1</property>
+  <property name="kdenlive:docproperties.renderendguide">-1</property>
+  <property name="kdenlive:docproperties.renderexportaudio">0</property>
+  <property name="kdenlive:docproperties.renderfullcolorrange">0</property>
+  <property name="kdenlive:docproperties.rendermode">0</property>
+  <property name="kdenlive:docproperties.renderplay">0</property>
+  <property name="kdenlive:docproperties.renderpreview">0</property>
+  <property name="kdenlive:docproperties.renderprofile">MP4-H264/AAC</property>
+  <property name="kdenlive:docproperties.renderrescale">0</property>
+  <property name="kdenlive:docproperties.renderrescaleheight">540</property>
+  <property name="kdenlive:docproperties.renderrescalewidth">960</property>
+  <property name="kdenlive:docproperties.renderspeed">6</property>
+  <property name="kdenlive:docproperties.renderstartguide">-1</property>
+  <property name="kdenlive:docproperties.rendertcoverlay">0</property>
+  <property name="kdenlive:docproperties.rendertctype">-1</property>
+  <property name="kdenlive:docproperties.rendertwopass">0</property>
   <property name="xml_retain">1</property>
   <entry in="00:00:00.000" out="00:00:00.000" producer="{20847c91-23e7-4076-865d-bf21369b2a64}"/>
   <entry in="00:00:00.000" out="00:02:28.617" producer="producer1"/>
