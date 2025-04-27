@@ -2,7 +2,7 @@
 
 ## Démonstration Vidéo 📺
 
-https://youtu.be/JFBEWBJ5Qvg
+[Regarder la démo sur YouTube](https://youtu.be/JFBEWBJ5Qvg)
 
 ## Description 📖
 
