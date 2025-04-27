@@ -92,7 +92,7 @@ Le projet de SAE a été développé par le **groupe n°1**, composé de :
 * Cédric COLIN
 * Marvyn LEVIN
 * Anna GAIFFE
-* Sugdenaz Ekkici
+* Sugdenaz EKKICI
 * Leslie MERAT
 
 ## Remarques 💡
