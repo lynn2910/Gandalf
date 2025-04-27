@@ -69,7 +69,7 @@ git submodule update --recursive --init
 
 Le projet de SAE sera alors également cloné.
 
-> **Note :** Le clonage prend du temps car il y a des ressources lourdes à cloner.
+> **Note :** Le clonage prend du temps, car il y a des ressources lourdes à cloner.
 
 ---
 </details>

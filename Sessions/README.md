@@ -130,12 +130,10 @@ Assurez-vous que la base de données est déjà créée. La configuration devrai
 Depuis le dossier `backend`, lancez le serveur :
 
 ```bash
-npm run dev
+npm run serve
 # ou
-# yarn dev
+# yarn serve
 ```
-
-Le serveur backend devrait démarrer et écouter sur le port configuré (par défaut 3000).
 
 ### Démarrer le serveur frontend
 
@@ -148,12 +146,12 @@ npm run serve
 # yarn serve
 ```
 
-Le serveur frontend sera accessible, généralement sur `http://localhost:8080`.
+Le serveur frontend sera accessible à l'adresse `http://localhost:8080`.
 
 ### Accéder à l'application
 
-Ouvrez votre navigateur web et naviguez vers l'adresse indiquée par le serveur frontend (probablement
-`http://localhost:8080`) pour accéder à l'application.
+Ouvrez votre navigateur web et naviguez vers l'adresse indiquée par le serveur frontend (http://localhost:8080) pour
+accéder à l'application.
 
 ## Auteurs 🧑‍💻
 
@@ -161,8 +159,3 @@ Ce projet a été développé par :
 
 * Cédric COLIN
 * Marvyn LEVIN
-
-## Remarques 💡
-
-Ce projet a été créé avec un objectif pédagogique, servant de démonstration pratique pour la mise en place d'un
-*système d'authentification basé sur les sessions*.
